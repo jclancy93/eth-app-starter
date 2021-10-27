@@ -41,15 +41,6 @@ export function TransactionProvider({ children }: Props) {
           </Box>
         )
       });
-      // addNotification({
-      //   notification: {
-      //     type: 'transactionStarted',
-      //     transaction: payload.transaction,
-      //     submittedAt: payload.submittedAt,
-      //     transactionName: payload.transactionName,
-      //   },
-      //   chainId: payload.transaction.chainId,
-      // })
     },
     [dispatch]
   )
@@ -69,16 +60,20 @@ export function TransactionProvider({ children }: Props) {
           const receipt = await library.getTransactionReceipt(tx.transaction.hash)
           if (receipt) {
             const type = receipt.status === 0 ? 'transactionFailed' : 'transactionSucceed'
-            // addNotification({
-            //   notification: {
-            //     type,
-            //     submittedAt: Date.now(),
-            //     transaction: tx.transaction,
-            //     receipt,
-            //     transactionName: tx.transactionName,
-            //   },
-            //   chainId,
-            // })
+            toast({
+              position: "top-right",
+              render: () => type === 'transactionSucceed' ? (
+                <Box color="white" p={3} bg="blue.500">
+                  <Text>Transaction Succeeded</Text>
+                  <Link href="https://chakra-ui.com" isExternal>View on Etherscan</Link>
+                </Box>
+              ) : (
+                <Box color="white" p={3} bg="blue.500">
+                  <Text>Transaction Failed</Text>
+                  <Link href="https://chakra-ui.com" isExternal>View on Etherscan</Link>
+                </Box>
+              )
+            })
 
             return { ...tx, receipt }
           } else {
@@ -102,7 +97,7 @@ export function TransactionProvider({ children }: Props) {
     }
 
     updateTransactions()
-  }, [chainId, library, blockNumber])
+  }, [chainId, library, blockNumber, transactions, toast])
 
   return <TransactionsContext.Provider value={{ transactions, addTransaction }} children={children} />
 }
