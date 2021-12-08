@@ -17,6 +17,7 @@ export function getStoredTransactionState(transaction: StoredTransaction) {
 }
 
 export type StoredTransactions = {
+  // eslint-disable-next-line no-unused-vars
   [T in ChainId]?: StoredTransaction[]
 }
 

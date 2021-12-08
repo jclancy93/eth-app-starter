@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChainStateProvider } from './contexts/ChainState/provider';
 import { BlockNumberProvider } from './contexts/BlockNumber';
 import { MULTICALL_ADDRESSES } from './constants/addresses';
@@ -19,10 +18,9 @@ function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
   return new Web3Provider(provider);
 }
 
-
 function App() {
   return (
-    <Web3ReactProvider  getLibrary={getLibrary}>
+    <Web3ReactProvider getLibrary={getLibrary}>
       <BlockNumberProvider>
         <NetworkActivator />
         <ChainStateProvider multicallAddresses={MULTICALL_ADDRESSES}>

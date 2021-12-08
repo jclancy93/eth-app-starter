@@ -1,18 +1,17 @@
-
-import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment } from 'react'
-import { isMobile } from 'react-device-detect'
-import { ModalType, useModalContext } from '../../contexts/Modal/context'
+import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment } from 'react';
+import { isMobile } from 'react-device-detect';
+import { ModalType, useModalContext } from '../../contexts/Modal/context';
 import { WalletModal } from './WalletModal';
 
 interface ModalProps {
-  minHeight?: number
-  maxHeight?: number
-  initialFocusRef?: React.RefObject<any>
-  children?: React.ReactNode
-  padding?: number
-  maxWidth?: number
-  className?: string
+  minHeight?: number;
+  maxHeight?: number;
+  initialFocusRef?: React.RefObject<any>;
+  children?: React.ReactNode;
+  padding?: number;
+  maxWidth?: number;
+  className?: string;
 }
 
 export default function BaseModal({
@@ -23,14 +22,17 @@ export default function BaseModal({
   padding = 5,
   maxWidth = 420,
 }: ModalProps) {
-
-  const { hideModal, store } = useModalContext()
+  const { hideModal, store } = useModalContext();
 
   return (
     <>
       <Transition appear show={store?.modalType ? true : false} as={Fragment}>
-        <Dialog as="div" onClose={hideModal} className="fixed inset-0 z-10 overflow-y-hidden">
-          <Dialog.Overlay className="fixed inset-0 bg-gray-300 backdrop-blur-md opacity-30" />
+        <Dialog
+          as="div"
+          onClose={hideModal}
+          className="fixed inset-0 z-10 overflow-y-hidden"
+        >
+          <Dialog.Overlay className="fixed inset-0 bg-gray-500 backdrop-blur-md opacity-30" />
           <div className="flex items-center justify-center h-screen px-4">
             <Transition.Child
               as={Fragment}
@@ -50,8 +52,15 @@ export default function BaseModal({
               >
                 <div className="w-full p-px rounded bg-gray-900">
                   <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded">
-                    <div style={{ minHeight: `${minHeight}vh`, maxHeight: `${maxHeight}vh` }}>
-                        {store.modalType === ModalType.WALLET_MODAL && (<WalletModal />)}
+                    <div
+                      style={{
+                        minHeight: `${minHeight}vh`,
+                        maxHeight: `${maxHeight}vh`,
+                      }}
+                    >
+                      {store.modalType === ModalType.WALLET_MODAL && (
+                        <WalletModal />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -61,5 +70,5 @@ export default function BaseModal({
         </Dialog>
       </Transition>
     </>
-  )
+  );
 }

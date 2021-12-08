@@ -1,29 +1,33 @@
-import { useState, ReactNode } from 'react'
-import { GlobalModalContext } from './context'
+import { useState, ReactNode } from 'react';
+import { GlobalModalContext } from './context';
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export function ModalProvider({ children }: Props) {
-    const [store, setStore] = useState({})
+  const [store, setStore] = useState({});
 
-    const showModal = (modalType: string, ModalProps: any = {}) => {
-        setStore({
-            ...store,
-            modalType,
-            ModalProps
-        })
-    }
+  const showModal = (modalType: string, ModalProps: any = {}) => {
+    setStore({
+      ...store,
+      modalType,
+      ModalProps,
+    });
+  };
 
-    const hideModal = () => {
-        setStore({
-            ...store,
-            modalType: null,
-            ModalProps: {}
-        })
-    }
+  const hideModal = () => {
+    setStore({
+      ...store,
+      modalType: null,
+      ModalProps: {},
+    });
+  };
 
-
-  return <GlobalModalContext.Provider value={{ store, showModal, hideModal }} children={children} />
+  return (
+    <GlobalModalContext.Provider
+      value={{ store, showModal, hideModal }}
+      children={children}
+    />
+  );
 }
