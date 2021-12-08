@@ -6,9 +6,10 @@ import metamask from '../../images/metamask.svg'
 import walletConnect from '../../images/walletConnect.svg'
 import useENSName from "../../hooks/useENSName"
 import { shortenAddress } from "../../utils/shortenAddress"
-import { DocumentDuplicateIcon, ExternalLinkIcon } from "@heroicons/react/outline"
+import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { getExplorerAddressLink } from "../../utils/network"
 import { ChainId } from "../../constants/ChainId"
+import { CopyButton } from "../CopyButton"
 
 export function WalletModal() {
     const { activate, account, connector, chainId, deactivate } = useWeb3React()
@@ -66,11 +67,11 @@ export function WalletModal() {
         </>
         ) : (
             <>
-            <div className="mt-3 text-center sm:mt-5">
-                <h3 className="text-lg leading-6 font-medium text-gray-200" id="modal-headline">
+            <div className="text-center sm:mt-5">
+                <h3 className="text-lg leading-4 font-medium text-gray-200" id="modal-headline">
                 Account
                 </h3>
-                <div className="border border-gray-700 mt-6 p-4 rounded text-left">
+                <div className="border border-gray-700 mt-6 p-4 rounded-xl text-left">
                 <div className="w-full flex justify-between items-center">
                 <p className="text-gray-500 text-xs font-normal">
                     Connected with {connector?.constructor.name}
@@ -82,14 +83,15 @@ export function WalletModal() {
                 <div className="mt-2">
                     <p className="text-bold text-lg text-gray-100">{ ENSName ?? shortenAddress(account)}</p>
                     <div className="mt-2">
-                        <a className="cursor-pointer text-gray-500 text-xs inline-flex items-center mr-2" href={getExplorerAddressLink(account, chainId as ChainId)} rel="norefferer" target="_blank">
+                        <a className="cursor-pointer text-gray-500 text-xs inline-flex items-center mr-3 hover:text-gray-400" href={getExplorerAddressLink(account, chainId as ChainId)} rel="norefferer" target="_blank">
                             <ExternalLinkIcon className="inline h-4 w-4 mr-1" /> View on Etherscan
                         </a>
-                        <span className="cursor-pointer text-gray-500 text-xs inline-flex items-center">
-                            <DocumentDuplicateIcon className="inline h-4 w-4 mr-1" /> Copy
-                        </span>
+                        <CopyButton copyText={account}/>
                     </div>
                 </div>
+                </div>
+                <div className="mt-4 text-gray-400 text-light">
+                    Your transactions will appear here...
                 </div>
             </div>
             </>
