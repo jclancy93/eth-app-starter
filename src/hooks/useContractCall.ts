@@ -1,8 +1,8 @@
-import { Interface } from '@ethersproject/abi'
 import { useMemo } from 'react'
 import { Falsy } from '../types'
 import { useChainCalls } from './useChainCall'
 import { ChainCall } from '../contexts/ChainState/callsReducer'
+import { ethers } from 'ethers'
 
 function warnOnInvalidContractCall(call: ContractCall | Falsy) {
   console.warn(
@@ -20,7 +20,7 @@ function encodeCallData(call: ContractCall | Falsy): ChainCall | Falsy {
 }
 
 export interface ContractCall {
-  abi: Interface
+  abi: ethers.utils.Interface
   address: string
   method: string
   args: any[]

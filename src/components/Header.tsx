@@ -1,111 +1,126 @@
-// @ts-nocheck
-import React from "react";
-import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
+import { Fragment } from 'react'
+import { Disclosure } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { classNames } from '../utils/classNames'
+import { useWeb3React } from '@web3-react/core'
+import { useModals } from '../hooks/useModals'
+import { shortenAddress } from '../utils/shortenAddress'
+import useENSName from '../hooks/useENSName'
 
-const NavBar = (props) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+const navigation = [
+  { name: 'Home', href: '#', current: true },
+]
 
-  const toggle = () => setIsOpen(!isOpen);
+export function ConnectWalletButton () {
+  const { account } = useWeb3React()
+  const { showWalletModal } = useModals()
+  const { ENSName } = useENSName(account ?? undefined);
+
 
   return (
-    <NavBarContainer {...props}>
-      <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <h1>TEST</h1>
-      <MenuLinks isOpen={isOpen} />
-    </NavBarContainer>
-  );
-};
-
-const CloseIcon = () => (
-  <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-    <title>Close</title>
-    <path
-      fill="white"
-      d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
-    />
-  </svg>
-);
-
-const MenuIcon = () => (
-  <svg
-    width="24px"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="white"
+    <button
+    type="button"
+    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 mx-2"
+    onClick={() => showWalletModal()}
   >
-    <title>Menu</title>
-    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-  </svg>
-);
+    {!account ? <span>Connect Wallet</span> : <span>{ ENSName ?? shortenAddress(account)}</span>}
+  </button>
+  )
+}
 
-const MenuToggle = ({ toggle, isOpen }) => {
+export function Header() {
   return (
-    <Box display={{ base: "block", md: "none" }} onClick={toggle}>
-      {isOpen ? <CloseIcon /> : <MenuIcon />}
-    </Box>
-  );
-};
+    <Disclosure as="nav" className="bg-gray-800 absolute min-w-full">
+      {({ open }) => (
+        <>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div className="flex justify-between h-16">
+              <div className="flex">
+                <div className="-ml-2 mr-2 flex items-center md:hidden">
+                  {/* Mobile menu button */}
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <span className="sr-only">Open main menu</span>
+                    {open ? (
+                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    ) : (
+                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    )}
+                  </Disclosure.Button>
+                </div>
+                <div className="flex-shrink-0 flex items-center text-white text-2xl">
+                  Dapp Starter
+                </div>
+                <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                  {navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'px-3 py-2 rounded-md text-sm font-medium'
+                      )}
+                      aria-current={item.current ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center">
+              <div className="flex-shrink-0">
+                  <button
+                    type="button"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 mx-2"
+                  >
+                    <span>Ethereum</span>
+                  </button>
+                </div>
+                <div className="flex-shrink-0">
+                  <ConnectWalletButton />
+                </div>
+              </div>
+            </div>
+          </div>
 
-const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
-  return (
-    <Link href={to}>
-      <Text display="block" {...rest}>
-        {children}
-      </Text>
-    </Link>
-  );
-};
-
-const MenuLinks = ({ isOpen }) => {
-  return (
-    <Box
-      display={{ base: isOpen ? "block" : "none", md: "block" }}
-      flexBasis={{ base: "100%", md: "auto" }}
-    >
-      <Stack
-        spacing={8}
-        align="center"
-        justify={["center", "space-between", "flex-end", "flex-end"]}
-        direction={["column", "row", "row", "row"]}
-        pt={[4, 4, 0, 0]}
-        h={['100vh', '100vh', 'auto', 'auto']}
-      >
-        <MenuItem to="/">Home</MenuItem>
-        <MenuItem to="/how">How It works </MenuItem>
-        <MenuItem to="/faetures">Features </MenuItem>
-        <MenuItem to="/pricing">Pricing </MenuItem>
-        <MenuItem to="/signup" isLast>
-          <Button
-            size="sm"
-            rounded="md"
-            // _hover={{
-            //   bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
-            // }}
-          >
-            Create Account
-          </Button>
-        </MenuItem>
-      </Stack>
-    </Box>
-  );
-};
-
-const NavBarContainer = ({ children, ...props }) => {
-  return (
-    <Flex
-      as="nav"
-      align="center"
-      justify="space-between"
-      wrap="wrap"
-      w="100%"
-      mb={8}
-      p={8}
-      bg={"primary.500"}
-      {...props}
-    >
-      {children}
-    </Flex>
-  );
-};
-
-export default NavBar;
+          <Disclosure.Panel className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {navigation.map((item) => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    'block px-3 py-2 rounded-md text-base font-medium'
+                  )}
+                  aria-current={item.current ? 'page' : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
+            </div>
+            <div className="pt-4 pb-3 border-t border-gray-700">
+                {/* TODO: add this back will wallet information  */}
+              {/* <div className="flex items-center px-5 sm:px-6">
+                <div className="flex-shrink-0">
+                  <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                </div>
+                <div className="ml-3">
+                  <div className="text-base font-medium text-white">{user.name}</div>
+                  <div className="text-sm font-medium text-gray-400">{user.email}</div>
+                </div>
+                <button
+                  type="button"
+                  className="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                >
+                  <span className="sr-only">View notifications</span>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div> */}
+            </div>
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
+  )
+}

@@ -1,15 +1,12 @@
-
-   
-import { useWeb3React } from '@web3-react/core'
 import { ReactNode, useCallback, useEffect, useReducer } from 'react'
-import { useToast, Box, Text, Link } from "@chakra-ui/react"
-import { ChainId } from '../../constants/ChainId'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useLocalStorage } from '../../hooks'
 import { useBlockNumber } from '../BlockNumber'
+import { useNotificationsContext } from '../Notifications/context'
 import { TransactionsContext } from './context'
 import { DEFAULT_STORED_TRANSACTIONS, StoredTransaction } from './model'
 import { transactionReducer } from './reducer'
-
+import { useWeb3React } from '@web3-react/core'
+import { ChainId } from '../../constants/ChainId'
 
 interface Props {
   children: ReactNode
@@ -18,12 +15,13 @@ interface Props {
 export function TransactionProvider({ children }: Props) {
   const { chainId, library } = useWeb3React()
   const blockNumber = useBlockNumber()
-  const toast = useToast()
-  const [storage, setStorage] = useLocalStorage(localStorage.transactionPath)
+  const [storage, setStorage] = useLocalStorage()
   const [transactions, dispatch] = useReducer(transactionReducer, storage ?? DEFAULT_STORED_TRANSACTIONS)
+  const { addNotification } = useNotificationsContext()
 
   useEffect(() => {
     setStorage(transactions)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactions])
 
   const addTransaction = useCallback(
@@ -32,17 +30,17 @@ export function TransactionProvider({ children }: Props) {
         type: 'ADD_TRANSACTION',
         payload,
       })
-      toast({
-        position: "bottom-left",
-        render: () => (
-          <Box color="white" p={3} bg="blue.500">
-            <Text>Transaction Pending</Text>
-            <Link href="https://chakra-ui.com" isExternal>View on Etherscan</Link>
-          </Box>
-        )
-      });
+      addNotification({
+        notification: {
+          type: 'transactionStarted',
+          transaction: payload.transaction,
+          submittedAt: payload.submittedAt,
+          transactionName: payload.transactionName,
+        },
+        chainId: payload.transaction.chainId,
+      })
     },
-    [dispatch]
+    [dispatch, addNotification]
   )
 
   useEffect(() => {
@@ -60,19 +58,15 @@ export function TransactionProvider({ children }: Props) {
           const receipt = await library.getTransactionReceipt(tx.transaction.hash)
           if (receipt) {
             const type = receipt.status === 0 ? 'transactionFailed' : 'transactionSucceed'
-            toast({
-              position: "top-right",
-              render: () => type === 'transactionSucceed' ? (
-                <Box color="white" p={3} bg="blue.500">
-                  <Text>Transaction Succeeded</Text>
-                  <Link href="https://chakra-ui.com" isExternal>View on Etherscan</Link>
-                </Box>
-              ) : (
-                <Box color="white" p={3} bg="blue.500">
-                  <Text>Transaction Failed</Text>
-                  <Link href="https://chakra-ui.com" isExternal>View on Etherscan</Link>
-                </Box>
-              )
+            addNotification({
+              notification: {
+                type,
+                submittedAt: Date.now(),
+                transaction: tx.transaction,
+                receipt,
+                transactionName: tx.transactionName,
+              },
+              chainId,
             })
 
             return { ...tx, receipt }
@@ -97,7 +91,8 @@ export function TransactionProvider({ children }: Props) {
     }
 
     updateTransactions()
-  }, [chainId, library, blockNumber, transactions, toast])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, library, blockNumber, addNotification])
 
   return <TransactionsContext.Provider value={{ transactions, addTransaction }} children={children} />
 }

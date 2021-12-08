@@ -25,16 +25,17 @@ function setItem(key: string, value: any) {
   }
 }
 
-export function useLocalStorage(key: string) {
-  const [value, setValue] = useState(() => getItem(key))
+export function useLocalStorage() {
+  const TRANSACTION_KEY = 'transactions'
+  const [value, setValue] = useState(() => getItem(TRANSACTION_KEY))
 
   useEffect(() => {
-    setValue(getItem(key))
-  }, [key])
+    setValue(getItem(TRANSACTION_KEY))
+  }, [TRANSACTION_KEY])
 
   useEffect(() => {
-    setItem(key, value)
-  }, [value, key])
+    setItem(TRANSACTION_KEY, value)
+  }, [value, TRANSACTION_KEY])
 
   return [value, setValue] as const
 }
