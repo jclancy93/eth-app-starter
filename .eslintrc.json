@@ -31,7 +31,6 @@
       "@typescript-eslint/prefer-interface": "off",
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/camelcase": "off",
-      "no-console": "off",
       "sort-keys": "off",
       "sort-imports": "off",
       "react/react-in-jsx-scope": "off",

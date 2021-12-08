@@ -9,8 +9,6 @@ function Web3Network(): JSX.Element | null {
   const { showNetworkModal } = useModals();
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
-  console.log({ isUnsupportedChainIdError });
-
   return (
     <div
       className="flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto"
@@ -36,7 +34,7 @@ function Web3Network(): JSX.Element | null {
             <span>{CHAIN_NAMES[chainId as ChainId]}</span>
           </>
         ) : (
-          <span>Unsupported Network</span>
+          <span>Wrong Network</span>
         )}
       </div>
     </div>

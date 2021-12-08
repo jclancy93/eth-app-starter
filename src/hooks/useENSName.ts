@@ -20,21 +20,21 @@ export default function useENSName(address?: string): { ENSName: string | null; 
     if (!debouncedAddress || !ethers.utils.isAddress(debouncedAddress)) return [undefined]
     return [namehash(`${debouncedAddress.toLowerCase().substr(2)}.addr.reverse`)]
   }, [debouncedAddress])
-  const resolverAddress = useContractCall(ensNodeArgument && {
+  const resolverAddress = useContractCall(chainId && ensNodeArgument ? {
       abi: new ethers.utils.Interface(ENSRegistrarABI),
       // @ts-ignore
-      address: ENS_REGISTRAR_ADDRESSES[chainId || 1],
+      address: ENS_REGISTRAR_ADDRESSES[1],
       method: 'resolver', 
       args: [ensNodeArgument[0] ?? ''] 
-    })
+    } : undefined)
   const resolverAddressResult = resolverAddress?.[0]
-  const name = useContractCall(resolverAddressResult && ensNodeArgument && {
+  const name = useContractCall((resolverAddressResult && ensNodeArgument) ? {
       abi: new ethers.utils.Interface(ENSResolverABI),
       // @ts-ignore
-      address: resolverAddressResult,
+      address: resolverAddressResult || ethers.constants.AddressZero,
       method: 'name',
       args: ensNodeArgument
-  })
+  } : undefined)
   return {
     ENSName: name?.[0],
   }

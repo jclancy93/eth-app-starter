@@ -17,8 +17,6 @@ export function WalletModal() {
 
   const { hideModal } = useModals();
 
-  console.log({ connector });
-
   return (
     <>
       {!account ? (
