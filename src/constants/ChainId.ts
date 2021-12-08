@@ -4,6 +4,7 @@ export enum ChainId {
   Ropsten = 3,
   Rinkeby = 4,
   Goerli = 5,
+  Optimism = 10,
   Kovan = 42,
   BSC = 56,
   BSCTestnet = 97,
@@ -18,16 +19,20 @@ export enum ChainId {
   Localhost = 1337,
   Hardhat = 31337,
   Fantom = 250,
+  Arbitrum = 42161,
+  Avalanche = 43114,
+  Celo = 42220,
 }
 
 export const CHAIN_NAMES = {
-  [ChainId.Mainnet]: 'Mainnet',
+  [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Ropsten]: 'Ropsten',
   [ChainId.Kovan]: 'Kovan',
   [ChainId.Rinkeby]: 'Rinkeby',
   [ChainId.Goerli]: 'Goerli',
+  [ChainId.Optimism]: 'Optimism',
   [ChainId.BSC]: 'BSC',
-  [ChainId.BSCTestnet]: 'BSCTestnet',
+  [ChainId.BSCTestnet]: 'BSC',
   [ChainId.xDai]: 'xDai',
   [ChainId.Polygon]: 'Polygon',
   [ChainId.Theta]: 'Theta',
@@ -39,4 +44,7 @@ export const CHAIN_NAMES = {
   [ChainId.Localhost]: 'Localhost',
   [ChainId.Hardhat]: 'Hardhat',
   [ChainId.Fantom]: 'Fantom',
+  [ChainId.Arbitrum]: 'Arbitrum',
+  [ChainId.Avalanche]: 'Avalanche',
+  [ChainId.Celo]: 'Celo'
 }

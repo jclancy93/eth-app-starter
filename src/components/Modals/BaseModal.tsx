@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
 import { isMobile } from 'react-device-detect';
 import { ModalType, useModalContext } from '../../contexts/Modal/context';
+import { NetworkModal } from './NetworkModal';
 import { WalletModal } from './WalletModal';
 
 interface ModalProps {
@@ -60,6 +61,9 @@ export default function BaseModal({
                     >
                       {store.modalType === ModalType.WALLET_MODAL && (
                         <WalletModal />
+                      )}
+                      {store.modalType === ModalType.NETWORK_MODAL && (
+                        <NetworkModal />
                       )}
                     </div>
                   </div>

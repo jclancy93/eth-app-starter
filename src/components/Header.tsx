@@ -6,6 +6,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useModals } from '../hooks/useModals';
 import { shortenAddress } from '../utils/shortenAddress';
 import useENSName from '../hooks/useENSName';
+import Web3Network from './Web3Network';
+import { isMobile } from 'react-device-detect';
 
 const navigation = [{ name: 'Home', href: '#', current: true }];
 
@@ -17,7 +19,7 @@ export function ConnectWalletButton() {
   return (
     <button
       type="button"
-      className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 mx-2"
+      className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none mx-2"
       onClick={() => showWalletModal()}
     >
       {!account ? (
@@ -71,12 +73,7 @@ export function Header() {
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <button
-                    type="button"
-                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 mx-2"
-                  >
-                    <span>Ethereum</span>
-                  </button>
+                  {!isMobile && <Web3Network />}
                 </div>
                 <div className="flex-shrink-0">
                   <ConnectWalletButton />
@@ -103,25 +100,6 @@ export function Header() {
                   {item.name}
                 </Disclosure.Button>
               ))}
-            </div>
-            <div className="pt-4 pb-3 border-t border-gray-700">
-              {/* TODO: add this back will wallet information  */}
-              {/* <div className="flex items-center px-5 sm:px-6">
-                <div className="flex-shrink-0">
-                  <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium text-white">{user.name}</div>
-                  <div className="text-sm font-medium text-gray-400">{user.email}</div>
-                </div>
-                <button
-                  type="button"
-                  className="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div> */}
             </div>
           </Disclosure.Panel>
         </>

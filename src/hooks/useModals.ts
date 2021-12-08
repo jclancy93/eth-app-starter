@@ -5,6 +5,7 @@ export function useModals() {
 
   return {
     showWalletModal: () => showModal(ModalType.WALLET_MODAL, {}),
+    showNetworkModal: () => showModal(ModalType.NETWORK_MODAL, {}),
     hideModal,
     store
   }
