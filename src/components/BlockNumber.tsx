@@ -18,8 +18,8 @@ export function BlockNumber() {
         <span
           className={
             isAnimating
-              ? 'text-center text-green-800 mr-2'
-              : 'text-center text-green-800 mr-2 opacity-75'
+              ? 'text-center text-green-800 mr-2 text-sm'
+              : 'text-center text-green-800 mr-2 opacity-75 text-sm'
           }
         >
           {blockNumber}
