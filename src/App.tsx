@@ -13,6 +13,7 @@ import { NotificationsProvider } from './contexts/Notifications/provider';
 import { PageLayout } from './components/PageLayout';
 import { ModalProvider } from './contexts/Modal';
 import BaseModal from './components/Modals/BaseModal';
+import { Home } from './pages/Home';
 
 function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
   return new Web3Provider(provider);
@@ -29,7 +30,7 @@ function App() {
               <ModalProvider>
                 <BaseModal />
                 <PageLayout>
-                  <h1>Test</h1>
+                  <Home />
                 </PageLayout>
               </ModalProvider>
             </NotificationsProvider>

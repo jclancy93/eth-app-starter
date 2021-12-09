@@ -25,3 +25,19 @@ export const ENS_REGISTRAR_ADDRESSES = {
   [ChainId.Goerli]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
   [ChainId.Rinkeby]: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
 }
+
+export const COMPOUND_ADDRESSES = {
+  [ChainId.Mainnet]: {
+    'cAAVE': '0xe65cdb6479bac1e22340e4e755fae7e509ecd06c',
+    'cBAT': '0x6c8c6b02e7b2be14d4fa6022dfd6d75921d90e4e',
+    'cDAI': '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643',
+    'cUSDC': '0x39aa39c021dfbae8fac545936693ac917d5e7563',
+    'cCOMP': '0x70e36f6bf80a52b3b46b3af8e106cc0ed743e8e4',
+    'cETH': '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5',
+    'cLINK': '0xface851a4921ce59e912d19329929ce6da6eb0c7'
+  },
+  [ChainId.Rinkeby]: {
+    'cBAT': '0xebf1a11532b93a529b5bc942b4baa98647913002',
+    'cDAI': '0x6d7f0754ffeb405d23c51ce938289d4835be3b14',
+  }
+}

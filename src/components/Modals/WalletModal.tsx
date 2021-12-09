@@ -27,7 +27,7 @@ function connectorToNameMapping(
 
 export function WalletModal() {
   const { activate, account, connector, chainId, deactivate } = useWeb3React();
-  const { ENSName } = useENSName(account ?? undefined);
+  const { ENSName } = useENSName();
 
   const { hideModal } = useModals();
 

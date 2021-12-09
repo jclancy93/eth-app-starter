@@ -14,7 +14,7 @@ const navigation = [{ name: 'Home', href: '#', current: true }];
 export function ConnectWalletButton() {
   const { account } = useWeb3React();
   const { showWalletModal } = useModals();
-  const { ENSName } = useENSName(account ?? undefined);
+  const { ENSName } = useENSName();
 
   return (
     <button
@@ -51,7 +51,7 @@ export function Header() {
                   </Disclosure.Button>
                 </div>
                 <div className="flex-shrink-0 flex items-center text-white text-2xl">
-                  Dapp Starter
+                  📈 Compound
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (

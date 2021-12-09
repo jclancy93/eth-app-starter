@@ -39,7 +39,7 @@ export function getContract(
 
 export function useContract(
   address: string | undefined,
-  ABI: ethers.ContractInterface,
+  ABI: any,
   withSignerIfPossible = true
 ): ethers.Contract | null {
   const { library, account } = useWeb3React();
