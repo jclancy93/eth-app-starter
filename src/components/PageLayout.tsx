@@ -10,7 +10,12 @@ export const PageLayout = ({
   return (
     <>
       <Header />
-      <div className="h-screen bg-gray-900">{children}</div>
+      <section
+        className="bg-gray-900"
+        style={{ minHeight: 'calc(100vh - 180px)' }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
+      </section>
       <Footer />
     </>
   );
