@@ -3,10 +3,10 @@
 Simple starter app for Etherum development with React. Uses modern React (Context, Hooks) to help developers build Ethereum apps with ease. 
 
 Supports Features like
-* ENS Name Support
+* Multicall for more efficient JSON-RPC communication
 * Multichain support (Ethereum, Polygon, Arbitrum, Avalance and more)
 * Multiple Wallet support (Metamask, WalletConnect)
-* Multicall for more efficient JSON-RPC communication
+* ENS Name Support (Avatar resolution coming soon)
 * Uses modern web3 libraries like Ethers.js and web3-react
 * Data updating on a per block basis out of the book
 * Notifications for Transactions
