@@ -1,9 +1,10 @@
 import { ChainId } from "../constants/ChainId"
+import { INFURA_ID } from "../config/environment"
 
 export const CONFIG = {
     readOnlyChainId: ChainId.Mainnet,
     readOnlyUrls: {
-      [ChainId.Mainnet]: 'https://mainnet.infura.io/v3/ff4b9e3e27404d18ae6296dcc353fd60',
+      [ChainId.Mainnet]: `https://mainnet.infura.io/v3/${INFURA_ID}`,
     },
     supportedChains: [
       ChainId.Mainnet,
@@ -12,14 +13,11 @@ export const CONFIG = {
       ChainId.Goerli,
       ChainId.Kovan,
       ChainId.BSC,
-      ChainId.BSCTestnet,
       ChainId.xDai,
-      ChainId.Polygon,
-      ChainId.Theta,
-      ChainId.Mumbai,
       ChainId.Polygon,
       ChainId.Palm,
       ChainId.Fantom,
       ChainId.Celo,
+      ChainId.Arbitrum,
     ],
   }

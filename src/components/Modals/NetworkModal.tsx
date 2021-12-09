@@ -2,125 +2,10 @@ import { useWeb3React } from '@web3-react/core';
 import { injected, walletconnect } from '../../config/connectors';
 import { useModals } from '../../hooks/useModals';
 import { Button } from '../Button';
-import { NETWORK_ICON } from '../../config/networks';
+import { NETWORK_ICON, NETWORK_INFO } from '../../config/networks';
 import { getExplorerAddressLink } from '../../utils/network';
 import { ChainId, CHAIN_NAMES } from '../../constants/ChainId';
-
-export const SUPPORTED_NETWORKS: {
-  [chainId in ChainId]?: {
-    chainId: string;
-    chainName: string;
-    nativeCurrency: {
-      name: string;
-      symbol: string;
-      decimals: number;
-    };
-    rpcUrls: string[];
-    blockExplorerUrls: string[];
-  };
-} = {
-  [ChainId.Mainnet]: {
-    chainId: '0x1',
-    chainName: 'Ethereum',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://mainnet.infura.io/v3'],
-    blockExplorerUrls: ['https://etherscan.com'],
-  },
-  [ChainId.Fantom]: {
-    chainId: '0xfa',
-    chainName: 'Fantom',
-    nativeCurrency: {
-      name: 'Fantom',
-      symbol: 'FTM',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpcapi.fantom.network'],
-    blockExplorerUrls: ['https://ftmscan.com'],
-  },
-  [ChainId.BSC]: {
-    chainId: '0x38',
-    chainName: 'Binance Smart Chain',
-    nativeCurrency: {
-      name: 'Binance Coin',
-      symbol: 'BNB',
-      decimals: 18,
-    },
-    rpcUrls: ['https://bsc-dataseed.binance.org'],
-    blockExplorerUrls: ['https://bscscan.com'],
-  },
-  [ChainId.Polygon]: {
-    chainId: '0x89',
-    chainName: 'Polygon',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18,
-    },
-    rpcUrls: ['https://polygon-rpc.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
-    blockExplorerUrls: ['https://polygonscan.com'],
-  },
-  [ChainId.xDai]: {
-    chainId: '0x64',
-    chainName: 'xDai',
-    nativeCurrency: {
-      name: 'xDai Token',
-      symbol: 'xDai',
-      decimals: 18,
-    },
-    rpcUrls: ['https://rpc.xdaichain.com'],
-    blockExplorerUrls: ['https://blockscout.com/poa/xdai'],
-  },
-  [ChainId.Avalanche]: {
-    chainId: '0xA86A',
-    chainName: 'Avalanche',
-    nativeCurrency: {
-      name: 'Avalanche Token',
-      symbol: 'AVAX',
-      decimals: 18,
-    },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://cchain.explorer.avax.network'],
-  },
-  [ChainId.Arbitrum]: {
-    chainId: '0xA4B1',
-    chainName: 'Arbitrum',
-    nativeCurrency: {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-    },
-    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
-    blockExplorerUrls: ['https://arbiscan.io'],
-  },
-  [ChainId.Celo]: {
-    chainId: '0xA4EC',
-    chainName: 'Celo',
-    nativeCurrency: {
-      name: 'Celo',
-      symbol: 'CELO',
-      decimals: 18,
-    },
-    rpcUrls: ['https://forno.celo.org'],
-    blockExplorerUrls: ['https://explorer.celo.org'],
-  },
-  [ChainId.Palm]: {
-    chainId: '0x2A15C308D',
-    chainName: 'Palm',
-    nativeCurrency: {
-      name: 'Palm',
-      symbol: 'PALM',
-      decimals: 18,
-    },
-    rpcUrls: [
-      'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
-    ],
-    blockExplorerUrls: ['https://explorer.palm.io'],
-  },
-};
+import { CONFIG } from '../../config/chainConfig';
 
 export function NetworkModal() {
   const { account, connector, chainId, library } = useWeb3React();
@@ -137,17 +22,7 @@ export function NetworkModal() {
             Select A Network
           </h3>
           <div className="mt-4 grid grid-flow-row-dense grid-cols-1 gap-5 overflow-y-auto md:grid-cols-2 text-gray-200">
-            {[
-              ChainId.Mainnet,
-              ChainId.Polygon,
-              ChainId.Fantom,
-              ChainId.Arbitrum,
-              ChainId.BSC,
-              ChainId.xDai,
-              ChainId.Avalanche,
-              ChainId.Celo,
-              ChainId.Palm,
-            ].map((key: ChainId, i: number) => {
+            {CONFIG.supportedChains.map((key: ChainId, i: number) => {
               if (chainId === key) {
                 return (
                   <button
@@ -177,10 +52,18 @@ export function NetworkModal() {
                   key={i}
                   onClick={() => {
                     hideModal();
-                    const params = SUPPORTED_NETWORKS[key];
-                    if (key === ChainId.Mainnet) {
+                    const params = NETWORK_INFO[key];
+                    if (
+                      [
+                        ChainId.Mainnet,
+                        ChainId.Rinkeby,
+                        ChainId.Ropsten,
+                        ChainId.Kovan,
+                        ChainId.Goerli,
+                      ].includes(key)
+                    ) {
                       library?.send('wallet_switchEthereumChain', [
-                        { chainId: '0x1' },
+                        { chainId: NETWORK_INFO[key]?.chainId },
                         account,
                       ]);
                     } else {

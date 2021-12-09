@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 import { injected, walletconnect } from '../../config/connectors';
 import { useModals } from '../../hooks/useModals';
 import { Button } from '../Button';
@@ -10,12 +11,48 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { getExplorerAddressLink } from '../../utils/network';
 import { ChainId } from '../../constants/ChainId';
 import { CopyButton } from '../CopyButton';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+
+function connectorToNameMapping(
+  connectorName: string | undefined,
+): string | null {
+  switch (connectorName) {
+    case 'InjectedConnector':
+      return 'MetaMask';
+    case 'WalletConnectConnector':
+      return 'WalletConnect';
+  }
+  return null;
+}
 
 export function WalletModal() {
   const { activate, account, connector, chainId, deactivate } = useWeb3React();
   const { ENSName } = useENSName(account ?? undefined);
 
   const { hideModal } = useModals();
+
+  const walletSignout = () => {
+    deactivate();
+    // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
+    if (connector instanceof WalletConnectConnector) {
+      connector.walletConnectProvider = undefined;
+    }
+  };
+
+  const tryActivation = async (connector: AbstractConnector | undefined) => {
+    // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
+    if (connector instanceof WalletConnectConnector) {
+      connector.walletConnectProvider = undefined;
+    }
+    if (connector) {
+      try {
+        await activate(connector);
+        hideModal();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   return (
     <>
@@ -41,10 +78,7 @@ export function WalletModal() {
             <Button
               variant="filled"
               color="gray"
-              onClick={async () => {
-                await activate(injected);
-                hideModal();
-              }}
+              onClick={() => tryActivation(injected)}
               className="flex text-left py-3 items-center"
             >
               Metamask
@@ -55,10 +89,7 @@ export function WalletModal() {
             <Button
               variant="filled"
               color="gray"
-              onClick={async () => {
-                await activate(walletconnect);
-                hideModal();
-              }}
+              onClick={() => tryActivation(walletconnect)}
               className="text-left py-3 flex items-center"
             >
               WalletConnect
@@ -82,7 +113,9 @@ export function WalletModal() {
             <div className="border border-gray-700 mt-6 p-4 rounded-xl text-left">
               <div className="w-full flex justify-between items-center">
                 <p className="text-gray-500 text-xs font-normal">
-                  Connected with {connector?.constructor.name}
+                  Connected with{' '}
+                  {connectorToNameMapping(connector?.constructor.name) ??
+                    'Unknown'}
                 </p>
                 <Button
                   size="xs"

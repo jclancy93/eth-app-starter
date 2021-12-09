@@ -39,3 +39,133 @@ export const NETWORK_ICON = {
   [ChainId.Celo]: Celo,
   [ChainId.Palm]: Palm,
 }
+
+export const NETWORK_INFO: {
+    [chainId in ChainId]?: {
+      chainId: string;
+      chainName: string;
+      nativeCurrency: {
+        name: string;
+        symbol: string;
+        decimals: number;
+      };
+      rpcUrls: string[];
+      blockExplorerUrls: string[];
+    } | {
+        chainId: string;
+    };
+  } = {
+    [ChainId.Mainnet]: {
+      chainId: '0x1',
+      chainName: 'Ethereum',
+      nativeCurrency: {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: ['https://mainnet.infura.io/v3'],
+      blockExplorerUrls: ['https://etherscan.com'],
+    },
+    [ChainId.Rinkeby]: {
+        chainId: '0x4',
+    },
+    [ChainId.Ropsten]: {
+        chainId: '0x3',
+    },
+    [ChainId.Goerli]: {
+        chainId: '0x5',
+    },
+    [ChainId.Kovan]: {
+        chainId: '0x2A',
+    },
+    [ChainId.Fantom]: {
+      chainId: '0xfa',
+      chainName: 'Fantom',
+      nativeCurrency: {
+        name: 'Fantom',
+        symbol: 'FTM',
+        decimals: 18,
+      },
+      rpcUrls: ['https://rpcapi.fantom.network'],
+      blockExplorerUrls: ['https://ftmscan.com'],
+    },
+    [ChainId.BSC]: {
+      chainId: '0x38',
+      chainName: 'Binance Smart Chain',
+      nativeCurrency: {
+        name: 'Binance Coin',
+        symbol: 'BNB',
+        decimals: 18,
+      },
+      rpcUrls: ['https://bsc-dataseed.binance.org'],
+      blockExplorerUrls: ['https://bscscan.com'],
+    },
+    [ChainId.Polygon]: {
+      chainId: '0x89',
+      chainName: 'Polygon',
+      nativeCurrency: {
+        name: 'Matic',
+        symbol: 'MATIC',
+        decimals: 18,
+      },
+      rpcUrls: ['https://polygon-rpc.com'], // ['https://matic-mainnet.chainstacklabs.com/'],
+      blockExplorerUrls: ['https://polygonscan.com'],
+    },
+    [ChainId.xDai]: {
+      chainId: '0x64',
+      chainName: 'xDai',
+      nativeCurrency: {
+        name: 'xDai Token',
+        symbol: 'xDai',
+        decimals: 18,
+      },
+      rpcUrls: ['https://rpc.xdaichain.com'],
+      blockExplorerUrls: ['https://blockscout.com/poa/xdai'],
+    },
+    [ChainId.Avalanche]: {
+      chainId: '0xA86A',
+      chainName: 'Avalanche',
+      nativeCurrency: {
+        name: 'Avalanche Token',
+        symbol: 'AVAX',
+        decimals: 18,
+      },
+      rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+      blockExplorerUrls: ['https://cchain.explorer.avax.network'],
+    },
+    [ChainId.Arbitrum]: {
+      chainId: '0xA4B1',
+      chainName: 'Arbitrum',
+      nativeCurrency: {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+      blockExplorerUrls: ['https://arbiscan.io'],
+    },
+    [ChainId.Celo]: {
+      chainId: '0xA4EC',
+      chainName: 'Celo',
+      nativeCurrency: {
+        name: 'Celo',
+        symbol: 'CELO',
+        decimals: 18,
+      },
+      rpcUrls: ['https://forno.celo.org'],
+      blockExplorerUrls: ['https://explorer.celo.org'],
+    },
+    [ChainId.Palm]: {
+      chainId: '0x2A15C308D',
+      chainName: 'Palm',
+      nativeCurrency: {
+        name: 'Palm',
+        symbol: 'PALM',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://palm-mainnet.infura.io/v3/da5fbfafcca14b109e2665290681e267',
+      ],
+      blockExplorerUrls: ['https://explorer.palm.io'],
+    },
+  };
