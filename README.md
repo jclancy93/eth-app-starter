@@ -1,6 +1,9 @@
+![image](https://user-images.githubusercontent.com/7850202/145331635-a681ad77-37a5-4622-af62-c1058a4e7eaf.png)
+
+
 # Etherum Dapp Starter Kit [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)
 
-Simple starter app for Etherum development with React. Uses modern React (Context, Hooks) to help developers build Ethereum apps with ease. 
+Simple starter app for Etherum development with React. Uses modern React (Context, Hooks) to help developers build Ethereum apps with ease. Inspired by [useDapp](https://github.com/EthWorks/useDApp), [Sushi](https://github.com/sushiswap/sushiswap-interface) and [Uniswap](https://github.com/Uniswap/interface)
 
 ## Features
 
