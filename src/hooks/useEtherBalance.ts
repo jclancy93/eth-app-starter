@@ -10,17 +10,16 @@ export function useEtherBalance(address: string | Falsy): BigNumber | undefined 
   const { chainId } = useWeb3React()
   // @ts-ignore
   const multicallAddress = MULTICALL_ADDRESSES[chainId]
-  console.log({ multicallAddress, address })
   const [etherBalance] =
     useContractCall(
       multicallAddress &&
         address && {
+        // @ts-ignore
           abi: new ethers.utils.Interface(MultiCallABI),
           address: multicallAddress,
           method: 'getEthBalance',
           args: [address],
         }
     ) ?? []
-  console.log(etherBalance, 'from hook')
   return etherBalance
 }

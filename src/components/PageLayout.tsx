@@ -14,7 +14,7 @@ export const PageLayout = ({
         className="bg-gray-900"
         style={{ minHeight: 'calc(100vh - 184px)' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-20">
           {children}
         </div>
       </section>

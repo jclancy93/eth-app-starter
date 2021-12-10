@@ -10,36 +10,86 @@ import { useToken } from '../hooks/useToken';
 import { useTokenBalance } from '../hooks/useTokenBalance';
 import { classNames } from '../utils/classNames';
 
-export const LendingMarket = ({ address }: { address: string }) => {
+enum MarketType {
+  'Borrow' = 1,
+  'Lend' = 2,
+}
+
+export const Market = ({
+  address,
+  type,
+}: {
+  address: string;
+  type: MarketType;
+}) => {
   const { chainId, account } = useWeb3React();
-  const { supplyApy, cTokenBalance, underlying } = useCompoundToken(address);
+  const { supplyApy, borrowApy, cTokenBalance, underlying } =
+    useCompoundToken(address);
   const tokenInfo = useToken(underlying);
   const tokenBalance =
     useTokenBalance(underlying, account) ?? ethers.BigNumber.from(0);
 
   return (
-    <h1 className="py-2 text-gray-200">
-      {tokenInfo?.symbol} - {supplyApy.toFixed(4)}% -{' '}
-      {ethers.utils.formatUnits(tokenBalance, tokenInfo?.decimals)}
-    </h1>
+    <div className="hover:bg-gray-700 cursor-pointer rounded flex justify-between align-items p-2 text-gray-200">
+      <span className="flex items-center justify-center inline-block w-16">
+        <img
+          width="20"
+          className="h-5"
+          src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${underlying}/logo.png`}
+          alt="logo"
+        />
+      </span>
+      <span className="inline-block w-32">{tokenInfo?.symbol}</span>
+      <span className="inline-block w-32">
+        {type === MarketType.Lend ? supplyApy.toFixed(4) : borrowApy.toFixed(4)}
+        %
+      </span>
+      <span className="inline-block w-32">
+        {parseFloat(
+          ethers.utils.formatUnits(tokenBalance, tokenInfo?.decimals),
+        ).toFixed(4)}
+      </span>
+    </div>
   );
 };
 
-export const ETHLendingMarket = ({ address }: { address: string }) => {
+export const ETHMarket = ({
+  address,
+  type,
+}: {
+  address: string;
+  type: MarketType;
+}) => {
   const { chainId, account, library } = useWeb3React();
-  const { supplyApy, underlying } = useCompoundToken(address);
+  const { supplyApy, borrowApy, underlying } = useCompoundToken(address);
   const etherBalance = useEtherBalance(account);
 
   return (
-    <h1 className="py-2 text-gray-200">
-      ETH - {supplyApy.toFixed(4)}% -{' '}
-      {ethers.utils.formatEther(etherBalance ?? ethers.BigNumber.from(0))}
-    </h1>
+    <div className="hover:bg-gray-700 rounded cursor-pointer flex justify-between align-items p-2 text-gray-200">
+      <span className="flex justify-center items-center inline-block w-16">
+        <img
+          width="20"
+          className="h-5"
+          src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png`}
+          alt="logo"
+        />
+      </span>
+      <span className="inline-block w-32">ETH</span>
+      <span className="inline-block w-32">
+        {type === MarketType.Lend ? supplyApy.toFixed(4) : borrowApy.toFixed(4)}
+        %
+      </span>
+      <span className="inline-block w-32">
+        {parseFloat(
+          ethers.utils.formatEther(etherBalance ?? ethers.BigNumber.from(0)),
+        ).toFixed(4)}
+      </span>
+    </div>
   );
 };
 
 export const Home = () => {
-  const { chainId } = useWeb3React();
+  const { chainId, account } = useWeb3React();
 
   console.log({ chainId });
 
@@ -53,7 +103,13 @@ export const Home = () => {
             </h3>
           </div>
           <div className="bg-gray-800 px-4 py-5 sm:px-6 rounded rounded-t-none">
-            {chainId &&
+            <div className="flex justify-between align-items py-2 text-gray-400 text-sm">
+              <span className=" inline-block w-16"></span>
+              <span className="inline-block w-32">Symbol</span>
+              <span className="inline-block w-32">Lend APY</span>
+              <span className="inline-block w-32">Balance</span>
+            </div>
+            {account && chainId ? (
               // @ts-ignore
               COMPOUND_ADDRESSES[chainId] &&
               // @ts-ignore
@@ -61,11 +117,18 @@ export const Home = () => {
                 // @ts-ignore
                 const address = COMPOUND_ADDRESSES[chainId || 1][key];
                 return key === 'cETH' ? (
-                  <ETHLendingMarket key={key} address={address} />
+                  <ETHMarket
+                    key={key}
+                    address={address}
+                    type={MarketType.Lend}
+                  />
                 ) : (
-                  <LendingMarket key={key} address={address} />
+                  <Market key={key} address={address} type={MarketType.Lend} />
                 );
-              })}
+              })
+            ) : (
+              <h1 className="text-gray-200 font-medium text-lg">Loading...</h1>
+            )}
           </div>
         </section>
         <section className="w-full lg:w-1/2 ml-0 lg:ml-6">
@@ -74,7 +137,38 @@ export const Home = () => {
               Borrowing Markets
             </h3>
           </div>
-          <div className="bg-gray-800 px-4 py-5 sm:px-6 rounded rounded-t-none"></div>
+          <div className="bg-gray-800 px-4 py-5 sm:px-6 rounded rounded-t-none">
+            <div className="flex justify-between align-items py-2 text-gray-400 text-sm">
+              <span className=" inline-block w-16"></span>
+              <span className="inline-block w-32">Symbol</span>
+              <span className="inline-block w-32">Borrow APY</span>
+              <span className="inline-block w-32">Balance</span>
+            </div>
+            {account && chainId ? (
+              // @ts-ignore
+              COMPOUND_ADDRESSES[chainId] &&
+              // @ts-ignore
+              Object.keys(COMPOUND_ADDRESSES[chainId] || []).map((key) => {
+                // @ts-ignore
+                const address = COMPOUND_ADDRESSES[chainId || 1][key];
+                return key === 'cETH' ? (
+                  <ETHMarket
+                    key={key}
+                    address={address}
+                    type={MarketType.Borrow}
+                  />
+                ) : (
+                  <Market
+                    key={key}
+                    address={address}
+                    type={MarketType.Borrow}
+                  />
+                );
+              })
+            ) : (
+              <h1 className="text-gray-200 font-medium text-lg">Loading...</h1>
+            )}
+          </div>
         </section>
       </div>
     </>

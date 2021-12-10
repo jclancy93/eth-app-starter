@@ -41,6 +41,7 @@ export const COMPOUND_ADDRESSES = {
     'cDAI': '0x6d7f0754ffeb405d23c51ce938289d4835be3b14',
   },
   [ChainId.Goerli]: {
-    'cDAI': '0x822397d9a55d0fefd20f5c4bcab33c5f65bd28eb'
+    'cDAI': '0x822397d9a55d0fefd20f5c4bcab33c5f65bd28eb',
+    'cETH': '0x20572e4c090f15667cf7378e16fad2ea0e2f3eff',
   }
 }
