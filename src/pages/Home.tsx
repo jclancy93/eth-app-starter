@@ -1,9 +1,11 @@
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COMPOUND_ADDRESSES } from '../constants/addresses';
 import { ChainId } from '../constants/ChainId';
+import { useBlockNumber } from '../contexts/BlockNumber';
 import { useCompoundToken } from '../hooks/useCompoundToken';
+import { useEtherBalance } from '../hooks/useEtherBalance';
 import { useToken } from '../hooks/useToken';
 import { useTokenBalance } from '../hooks/useTokenBalance';
 import { classNames } from '../utils/classNames';
@@ -23,8 +25,23 @@ export const LendingMarket = ({ address }: { address: string }) => {
   );
 };
 
+export const ETHLendingMarket = ({ address }: { address: string }) => {
+  const { chainId, account, library } = useWeb3React();
+  const { supplyApy, underlying } = useCompoundToken(address);
+  const etherBalance = useEtherBalance(account);
+
+  return (
+    <h1 className="py-2 text-gray-200">
+      ETH - {supplyApy.toFixed(4)}% -{' '}
+      {ethers.utils.formatEther(etherBalance ?? ethers.BigNumber.from(0))}
+    </h1>
+  );
+};
+
 export const Home = () => {
   const { chainId } = useWeb3React();
+
+  console.log({ chainId });
 
   return (
     <>
@@ -36,12 +53,19 @@ export const Home = () => {
             </h3>
           </div>
           <div className="bg-gray-800 px-4 py-5 sm:px-6 rounded rounded-t-none">
-            {/* @ts-ignore */}
-            {Object.keys(COMPOUND_ADDRESSES[chainId || 1]).map((key) => {
+            {chainId &&
               // @ts-ignore
-              const address = COMPOUND_ADDRESSES[chainId || 1][key];
-              return <LendingMarket key={key} address={address} />;
-            })}
+              COMPOUND_ADDRESSES[chainId] &&
+              // @ts-ignore
+              Object.keys(COMPOUND_ADDRESSES[chainId] || []).map((key) => {
+                // @ts-ignore
+                const address = COMPOUND_ADDRESSES[chainId || 1][key];
+                return key === 'cETH' ? (
+                  <ETHLendingMarket key={key} address={address} />
+                ) : (
+                  <LendingMarket key={key} address={address} />
+                );
+              })}
           </div>
         </section>
         <section className="w-full lg:w-1/2 ml-0 lg:ml-6">

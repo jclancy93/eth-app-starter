@@ -39,5 +39,8 @@ export const COMPOUND_ADDRESSES = {
   [ChainId.Rinkeby]: {
     'cBAT': '0xebf1a11532b93a529b5bc942b4baa98647913002',
     'cDAI': '0x6d7f0754ffeb405d23c51ce938289d4835be3b14',
+  },
+  [ChainId.Goerli]: {
+    'cDAI': '0x822397d9a55d0fefd20f5c4bcab33c5f65bd28eb'
   }
 }
