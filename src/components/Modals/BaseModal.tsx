@@ -30,7 +30,7 @@ export default function BaseModal({
       <Dialog
         as="div"
         onClose={hideModal}
-        className="fixed inset-0 z-10 overflow-y-hidden"
+        className="fixed inset-0 z-50 overflow-y-hidden"
         open={store?.modalType ? true : false}
       >
         <Dialog.Overlay className="fixed inset-0 bg-gray-500 backdrop-blur-md opacity-30" />
@@ -43,7 +43,7 @@ export default function BaseModal({
             }}
           >
             <div className="w-full p-px rounded bg-gray-900">
-              <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded">
+              <div className="flex flex-col w-full h-full p-6 overflow-y-scroll rounded">
                 <div
                   style={{
                     minHeight: `${minHeight}vh`,

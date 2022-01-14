@@ -21,6 +21,7 @@ export function transactionReducer(state: StoredTransactions, action: Action): S
   switch (action.type) {
     case 'ADD_TRANSACTION': {
       const { chainId } = action.payload.transaction
+      console.log({chainId}, isChainId(chainId))
 
       if (isChainId(chainId)) {
         return {

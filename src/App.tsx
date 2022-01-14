@@ -13,6 +13,7 @@ import { NotificationsProvider } from './contexts/Notifications/provider';
 import { PageLayout } from './components/PageLayout';
 import { ModalProvider } from './contexts/Modal';
 import BaseModal from './components/Modals/BaseModal';
+import { Lend } from './pages/Lend';
 import { Home } from './pages/Home';
 
 function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
@@ -30,7 +31,9 @@ function App() {
               <ModalProvider>
                 <BaseModal />
                 <PageLayout>
-                  <Home />
+                  {/* TODO: add router */}
+                  {/* <Home /> */}
+                  <Lend />
                 </PageLayout>
               </ModalProvider>
             </NotificationsProvider>

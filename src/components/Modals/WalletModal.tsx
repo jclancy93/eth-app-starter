@@ -12,6 +12,8 @@ import { getExplorerAddressLink } from '../../utils/network';
 import { ChainId } from '../../constants/ChainId';
 import { CopyButton } from '../CopyButton';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { useTransactions } from '../../hooks';
+import { textChangeRangeIsUnchanged } from 'typescript';
 
 function connectorToNameMapping(
   connectorName: string | undefined,
@@ -28,6 +30,9 @@ function connectorToNameMapping(
 export function WalletModal() {
   const { activate, account, connector, chainId, deactivate } = useWeb3React();
   const { ENSName } = useENSName();
+  const { transactions } = useTransactions();
+
+  console.log({ transactions }, 'from wallet modal');
 
   const { hideModal } = useModals();
 
@@ -148,6 +153,9 @@ export function WalletModal() {
             <div className="mt-4 text-gray-400 text-light">
               Your transactions will appear here...
             </div>
+            {transactions.map((e: any) => (
+              <h1 key={e.transaction.hash}>{e.transaction.hash}</h1>
+            ))}
           </div>
         </>
       )}

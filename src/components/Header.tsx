@@ -9,7 +9,10 @@ import useENSName from '../hooks/useENSName';
 import Web3Network from './Web3Network';
 import { isMobile } from 'react-device-detect';
 
-const navigation = [{ name: 'Home', href: '#', current: true }];
+const navigation = [
+  { name: 'Markets', href: '#', current: true },
+  { name: 'Lending', href: '#', current: false },
+];
 
 export function ConnectWalletButton() {
   const { account } = useWeb3React();

@@ -48,11 +48,13 @@ export function TransactionProvider({ children }: Props) {
 
   useEffect(() => {
     const updateTransactions = async () => {
+      console.log(' should update transactions', chainId, library, blockNumber);
       if (!chainId || !library || !blockNumber) {
         return;
       }
 
       const checkTransaction = async (tx: StoredTransaction) => {
+        console.log('check tx', { tx });
         if (tx.receipt || !shouldCheck(blockNumber, tx)) {
           return tx;
         }

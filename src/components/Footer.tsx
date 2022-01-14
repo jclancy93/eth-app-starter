@@ -45,23 +45,18 @@ export function Footer() {
   const blockNumber = useBlockNumber();
   const [, setIsMounting] = useState(false);
 
-  useEffect(
-    () => {
-      if (!blockNumber) {
-        return;
-      }
+  useEffect(() => {
+    if (!blockNumber) {
+      return;
+    }
 
-      setIsMounting(true);
-      const mountingTimer = setTimeout(() => setIsMounting(false), 1000);
+    setIsMounting(true);
+    const mountingTimer = setTimeout(() => setIsMounting(false), 1000);
 
-      // this will clear Timeout when component unmount like in willComponentUnmount
-      return () => {
-        clearTimeout(mountingTimer);
-      };
-    },
-    [blockNumber], //useEffect will run only one time
-    //if you pass a value to array, like this [data] than clearTimeout will run every time this value changes (useEffect re-run)
-  );
+    return () => {
+      clearTimeout(mountingTimer);
+    };
+  }, [blockNumber]);
 
   return (
     <footer className="bg-gray-800">
@@ -80,13 +75,6 @@ export function Footer() {
         </div>
         <div className="mt-8 md:mt-0">
           <BlockNumber />
-          {/* <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-75" cx="12" cy="12" r="6" fill="green" strokeWidth="2"></circle>
-                <path className="opacity-75" fill="green" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-             */}
-          {/* TODO: Blocknumber info here */}
-          {/* <p className="text-center text-base text-gray-400">&copy; 2020 Workflow, Inc. All rights reserved.</p> */}
         </div>
       </div>
     </footer>
