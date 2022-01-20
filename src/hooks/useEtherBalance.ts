@@ -23,3 +23,4 @@ export function useEtherBalance(address: string | Falsy): BigNumber | undefined 
     ) ?? []
   return etherBalance
 }
+
